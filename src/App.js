@@ -7,8 +7,16 @@ function App() {
   const [totals, setTotals] = useState({ today: 0, week: 0, month: 0 });
 
   useEffect(() => {
+  fetchExpenses(); // primo caricamento
+
+  // Aggiorna ogni 10 secondi (10000 ms)
+  const interval = setInterval(() => {
     fetchExpenses();
-  }, []);
+  }, 10000);
+
+  // Pulisce l'intervallo quando il componente viene smontato
+  return () => clearInterval(interval);
+}, []);
 
   async function fetchExpenses() {
     const { data, error } = await supabase
